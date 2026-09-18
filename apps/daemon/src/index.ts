@@ -1,5 +1,6 @@
 import { serve } from '@hono/node-server';
 import type { AddressInfo } from 'node:net';
+import { rmSync } from 'node:fs';
 import { DaemonReadyLine, type DaemonRecord } from '@ps/contracts';
 import { loadConfig } from './config.js';
 import { claimRecord, isAlive, readRecord, removeRecord } from './record.js';
@@ -10,6 +11,15 @@ const HEARTBEAT_MS = 15_000;
 
 function announce(record: DaemonRecord): void {
   process.stdout.write(JSON.stringify(DaemonReadyLine.parse(record)) + '\n');
+}
+
+function closeConnections(server: unknown, which: 'idle' | 'all'): void {
+  const closable = server as {
+    closeIdleConnections?: () => void;
+    closeAllConnections?: () => void;
+  };
+  if (which === 'all') closable.closeAllConnections?.();
+  else closable.closeIdleConnections?.();
 }
 
 async function main(): Promise<void> {
@@ -64,15 +74,27 @@ async function main(): Promise<void> {
   }, HEARTBEAT_MS);
   heartbeat.unref();
 
+  let ownsRecord = true;
+  const dropRecord = () => {
+    if (!ownsRecord) return;
+    ownsRecord = false;
+    try {
+      rmSync(config.recordPath, { force: true });
+    } catch {
+    }
+  };
+  process.on('exit', dropRecord);
+
   let shuttingDown = false;
   const shutdown = (reason: string) => {
     if (shuttingDown) return;
     shuttingDown = true;
     console.error(`[daemon] shutting down (${reason})`);
     clearInterval(heartbeat);
-    server.close(() => {
-      void removeRecord(config.recordPath).finally(() => process.exit(0));
-    });
+
+    server.close(() => process.exit(0));
+    closeConnections(server, 'idle');
+    setTimeout(() => closeConnections(server, 'all'), 100).unref();
     setTimeout(() => process.exit(0), 3_000).unref();
   };
 

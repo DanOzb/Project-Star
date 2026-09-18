@@ -139,7 +139,7 @@ ok('daemon.json removed on clean exit');
 
 writeFileSync(
   recordPath,
-  JSON.stringify({ ...record, pid: 1 }, null, 2),
+  JSON.stringify({ ...record, pid: process.pid }, null, 2),
   { mode: 0o600 },
 );
 
@@ -151,4 +151,4 @@ ok('a stale daemon.json is detected and taken over');
 third.child.stdin.end();
 await exited(third.child);
 
-console.log(`\nall good${failed ? '' : ' — Step 1 is done'}`);
+console.log(`\nall good${failed ? '' : ' — Smoke test is done'}`);
