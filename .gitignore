@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+out/
+build/
+*.tsbuildinfo
+
+# Test and tooling
+coverage/
+.tmp/
+
+# Daemon data root
+.project-star/
+daemon.json
+
+# SQLite
+*.sqlite3
+*.sqlite3-wal
+*.sqlite3-shm
+
+# Scaffolded projects
+/projects/
+
+# Logs and env
+*.log
+.env
+.env.*
+!.env.example
+
+# OS and editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json

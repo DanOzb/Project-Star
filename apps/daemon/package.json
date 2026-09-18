@@ -1,0 +1,16 @@
+{
+  "name": "@ps/daemon",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start": "tsx src/index.ts"
+  },
+  "dependencies": {
+    "@hono/node-server": "^2.1.1",
+    "@ps/contracts": "workspace:*",
+    "hono": "^4.13.8"
+  }
+}
