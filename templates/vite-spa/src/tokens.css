@@ -1,0 +1,27 @@
+@theme {
+  /* Surfaces */
+  --color-bg: oklch(0.99 0 0);
+  --color-surface: oklch(1 0 0);
+  --color-surface-2: oklch(0.97 0.002 265);
+  --color-border: oklch(0.92 0.004 265);
+
+  /* Text */
+  --color-text: oklch(0.21 0.01 265);
+  --color-text-muted: oklch(0.55 0.012 265);
+
+  /* Accent */
+  --color-accent: oklch(0.55 0.18 265);
+  --color-accent-contrast: oklch(0.99 0 0);
+
+  /* Feedback */
+  --color-danger: oklch(0.58 0.2 27);
+  --color-danger-contrast: oklch(0.99 0 0);
+
+  /* Shape */
+  --radius-card: 0.75rem;
+  --radius-control: 0.5rem;
+
+  /* Type */
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
