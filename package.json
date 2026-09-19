@@ -16,7 +16,8 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "smoke": "node scripts/smoke.mjs"
+    "smoke": "node scripts/smoke.mjs",
+    "validate:template": "node scripts/validate-template.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

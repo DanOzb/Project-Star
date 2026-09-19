@@ -1,0 +1,9 @@
+node_modules
+dist
+dist-ssr
+*.local
+.DS_Store
+
+# No lockfile in the template yet — see decision log. Generated projects get
+# their own at scaffold time.
+pnpm-lock.yaml
