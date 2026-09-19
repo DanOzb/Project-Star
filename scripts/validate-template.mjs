@@ -54,16 +54,13 @@ function* walk(dir) {
   }
 }
 
-// ----------------------------------------------------------- convention rules
 
-// Cheap regex checks. Not a substitute for the ESLint rules (deferred), but
-// enough to catch drift from RULES.md in CI and before a commit.
 const CONVENTION_CHECKS = [
   { id: "R1.4", why: "style prop is banned", files: /\.tsx$/, bad: /\bstyle=\{\{/ },
   { id: "R1.5", why: "arbitrary value; add a token instead", files: /\.tsx$/, bad: /-\[(#|\d)/ },
   { id: "R3.5", why: "react-router-dom no longer exists in v8", files: /\.tsx?$/, bad: /from "react-router-dom"/ },
   { id: "R4.1", why: "array index used as key", files: /\.tsx$/, bad: /key=\{(i|idx|index)\}/ },
-  { id: "R6.1", why: "data-od-* is toolchain-owned", files: /\.tsx$/, bad: /data-od-/ },
+  { id: "R6.1", why: "data-ps-* is toolchain-owned", files: /\.tsx$/, bad: /data-ps-/ },
 ];
 
 function checkConventions(projectDir) {
@@ -114,7 +111,6 @@ function checkConventions(projectDir) {
   return problems;
 }
 
-  // R3.1 — every route file default-exports a named function.
   const routesDir = join(srcDir, "routes");
   const routeFiles = readdirSync(routesDir).filter((f) => f.endsWith(".tsx"));
   for (const file of routeFiles) {
