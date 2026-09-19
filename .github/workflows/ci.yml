@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+# A new push to the same branch cancels the run it supersedes.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    name: checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v5
+
+      # Reads the pnpm version from package.json "packageManager".
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+
+      - name: Install workspace
+        run: pnpm install --frozen-lockfile
+
+      # if the template has drifted from RULES.md.
+      - name: Template conventions
+        run: node scripts/validate-template.mjs --skip-install
+
+      - name: Typecheck
+        run: pnpm -r --if-present run typecheck
+
+      - name: Test
+        run: pnpm -r --if-present run test
+
+      # typechecks and builds it in isolation.
+      - name: Template scaffolds and builds
+        run: pnpm validate:template
